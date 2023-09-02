@@ -22,7 +22,9 @@ html(lang='en')
             /* Function that retrieves the content of one of the selected text fields of the form */
             /**************************************************************************************/
             function getName(http_method){
-                let name = '';
+                let name = http_method === 'GET' ? 
+                    document.getElementById('name_GET').value : 
+                    document.getElementById('name_POST').value;
                 // TODO: Here put the code that, depending on the value of the 'http_method' variable — GET / POST — assigns the 'name' variable to the value of the 'name_GET' / 'name_POST' form field
                 
                 return name;
@@ -66,7 +68,23 @@ html(lang='en')
                 // Configuration and execution of the (asynchronous) query to the web server
                 //--------------------------------------------------------------------------
                 xhr.responseType = response_type;  // Type of data received by the 'load' observer
-                xhr.open(http_method, 'http://localhost:8000/submit', true);
+
+                let url = 'http://localhost:8000/submit';
+                let requestBody = null;
+                if (http_method === 'GET') {
+                    // For GET requests, include the 'name' parameter in the query string
+                    url += `?name=${encodeURIComponent(name)}`;
+                } else {
+                    // For POST requests, include the 'name' parameter in the request body
+                    requestBody = `name=${name}`
+                }
+
+                xhr.open(http_method, url, true);
+
+                if (http_method === 'POST') {
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                }
+
                 //****************************************************************************************
                 // What is the acceptable data type - the server part should return data of the given type
                 // Default value: '*/*'
@@ -79,7 +97,7 @@ html(lang='en')
                         xhr.setRequestHeader('Accept', 'application/xml');
                         break;
                 }       
-               xhr.send(null);
+                xhr.send(requestBody);
             }
             /**************************************************************************************/
             /* Function that performs (asynchronous) query to the web server  usingFetch API      */
@@ -98,14 +116,29 @@ html(lang='en')
                         accept = 'application/xml';
                         break;
                 }
-                fetch('http://localhost:8000/submit', {
+                let requestBody = null;
+                let url = new URL('http://localhost:8000/submit');
+                if (http_method === 'GET') {
+                    // For GET requests, include the 'name' parameter in the URL
+                    url.searchParams.append('name', name);
+                } else {
+                    // For POST requests, include the 'name' parameter in the request body
+                    const requestData = {
+                        name: `${name}`
+                    };
+                    // Serialize the JSON object to a string
+                    requestBody = JSON.stringify(requestData);
+                } 
+
+                fetch(url.toString(), {
                     method: http_method,
                     headers: {
                         //****************************************************************************************
                         // What is the acceptable data type—the server part should return data of the given type
                         //****************************************************************************************
                         Accept: accept
-                    }
+                    },
+                    body: requestBody
                 }) // Execution of the (asynchronous) query to the web server — a promise is created
                 .then(function (response) { // if the promise is fulfilled
                     if (!response.ok)
