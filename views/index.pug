@@ -76,7 +76,7 @@ html(lang='en')
                     url += `?name=${encodeURIComponent(name)}`;
                 } else {
                     // For POST requests, include the 'name' parameter in the request body
-                    requestBody = `name=${name}`
+                    requestBody = `name=${encodeURIComponent(name)}`
                 }
 
                 xhr.open(http_method, url, true);
@@ -117,18 +117,18 @@ html(lang='en')
                         break;
                 }
                 let requestBody = null;
-                let url = new URL('http://localhost:8000/submit');
+                let url = 'http://localhost:8000/submit';
                 if (http_method === 'GET') {
                     // For GET requests, include the 'name' parameter in the URL
-                    url.searchParams.append('name', name);
+                    url += `?name=${encodeURIComponent(name)}`;
                 } else {
                     // For POST requests, include the 'name' parameter in the request body
-                    const requestData = {
-                        name: `${name}`
-                    };
-                    // Serialize the JSON object to a string
-                    requestBody = JSON.stringify(requestData);
+                    requestBody = `name=${encodeURIComponent(name)}`
                 } 
+
+                const contentType = http_method === 'POST'? 
+                        'application/x-www-form-urlencoded' :
+                        '';
 
                 fetch(url.toString(), {
                     method: http_method,
@@ -136,7 +136,8 @@ html(lang='en')
                         //****************************************************************************************
                         // What is the acceptable data type—the server part should return data of the given type
                         //****************************************************************************************
-                        Accept: accept
+                        'Accept': accept,
+                        'Content-Type': contentType
                     },
                     body: requestBody
                 }) // Execution of the (asynchronous) query to the web server — a promise is created
