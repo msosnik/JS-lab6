@@ -52,8 +52,21 @@ html(lang='en')
                         console.log(`HTTP method ⟶\t\t${http_method}\nResponse type ⟶\t${response_type}\nInput data ⟶\t\t${name}`);
                         console.log(xhr.response);
                         console.groupEnd();
-                        if(show_alert)
-                            window.alert(xhr.response);
+
+                        var resultString;
+                        if (xhr.responseType.includes('json')) {
+                            resultString = JSON.stringify(xhr.response);
+                        } 
+                        else if (xhr.responseType.includes('document')) {
+                            resultString = new XMLSerializer().serializeToString(xhr.response);
+                        }
+                        else {
+                            resultString = xhr.response; 
+                        }
+
+                        if(show_alert) {
+                            window.alert(resultString);
+                        }
                         else { 
                             results.set(`ajax ${http_method} ${response_type}`, xhr.response);
                             dispatchEvent(received); 
@@ -157,8 +170,9 @@ html(lang='en')
                     }
                     console.log(result);
                     console.groupEnd();   
-                    if(show_alert)
+                    if(show_alert) {
                         window.alert(result);  
+                    }
                     else {
                         results.set(`fetch ${http_method} ${response_type}`, result);
                         dispatchEvent(received);
@@ -168,6 +182,7 @@ html(lang='en')
                     window.alert(error);
                 });
             }
+            
         script(src="https://unpkg.com/chai/chai.js")
         script(src="https://unpkg.com/mocha/mocha.js") 
     body
@@ -295,3 +310,5 @@ html(lang='en')
                     test_executed = true;
                 }
             });
+
+            
