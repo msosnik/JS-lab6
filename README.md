@@ -2,37 +2,23 @@
 JavaScript course at AGH lab 6
 
 ## Overview
-This project contains node.js server/console application. It shows file read/write in sync and async way
+This project is node.js server application using express and pug packages.
 
 ## Packages and Tools
 To run the project in VS Code, you will need following packages:
-- fs-extra
+- express pug morgan entities
 
-        npm install fs-extra
-
-## Console Application
-Start the console application from command-line:
-
-    node ./src/console_script2.mjs [--async --sync]
-
-Example usage:
-
-    node ./src/console_script2.mjs --async
-    node ./src/console_script2.mjs --async
-    
-    node ./src/console_script2.mjs --sync
-
-    node ./src/console_script2.mjs
+        npm install express pug morgan entities
 
 ## Server Application 1
 Start your server as a standard node.js application from command-line:
 
-    node ./src/server_script1.mjs
+    node ./app1.js
 
 The server handles two routes:
-- Route: GET "/" - displays a basic UI
-- Route: GET "/submit" - displays a simple text depending on `name` parameter
-- Route: POST "/" - displays a simple text (same as GET /submit) depending on `name` parameter which is passed in request body (payload)
+- Route: GET "/" - displays UI
+- Route: GET "/submit" - returns text/json/xml depending on `Accept` value in request header
+- Route: POST "/submit" -  returns text/json/xml depending on `Accept` value in request header (same as GET /submit). `name` parameter is passed in request body (payload)
 
 Example usage (open links in web browser)
 
@@ -42,24 +28,12 @@ Example usage (open links in web browser)
 
 Execute a POST using curl and passing `name` parameter in request body
 
-    curl -X POST -d "name=ola" http://localhost:8000
-
-## Server Application 2
-Start your server as a standard node.js application from command-line:
-
-    node ./src/server_script2.mjs
-
-The server handles two routes:
-- Route: GET "/" - displays a basic UI
-- Route: GET "/submit" - displays a simple text depending on `option` and `text` parameter
-
-Example usage (open links in web browser)
-
-    http://localhost:8000
-    http://localhost:8000/submit?option=sync
-    http://localhost:8000/submit?option=async
-    http://localhost:8000/submit?option=---&text=cd
-
+    curl -X POST -d "name=ola" http://localhost:8000/submit
+    curl -X POST -d "name=ola" http://localhost:8000/submit -H "Accept: application/json"
+    curl -X POST -d "name=ola" http://localhost:8000/submit -H "Accept: application/xml"
+    
+## UI
+![ui](doc/ajax-fetch-ui.png)
 
 ## Tests 
 Client tests are written using mocha.
