@@ -36,29 +36,5 @@ Execute a POST using curl and passing `name` parameter in request body
 ![ui](doc/ajax-fetch-ui.png)
 
 ## Tests 
-Client tests are written using mocha.
-They can be started in 2 steps (in 2 terminals):
-
-    # start server
-    node src/server_script1
-
-    # start test script
-    npx mocha
-
-To run tests supertest package is required.
-
-    npm install supertest --save-dev
-
-## Optional Tools
-- Code Runner
-
-        code --install-extension formulahendry.code-runner
-
-- eslint
-
-        code --install-extension dbaeumer.vscode-eslint # installation
-        npm init @eslint/config # configuration
-
-        npx eslint --fix 'src/*.js' # execution
-        npx jsdoc src --verbose # jsdoc generation
+Client tests are written using mocha and integrated in index.pug page.
 
