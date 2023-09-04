@@ -33,6 +33,7 @@ Execute a POST using curl and passing `name` parameter in request body
     curl -X POST -d "name=ola" http://localhost:8000/submit -H "Accept: application/xml"
     
 ## UI
+UI is defined in PUG (Pretty Universal Generator) HTML template and illustrated below: 
 ![ui](doc/ajax-fetch-ui.png)
 
 ## Tests 
