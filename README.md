@@ -10,7 +10,7 @@ To run the project in VS Code, you will need following packages:
 
         npm install express pug morgan entities
 
-## Server Application 1
+## Server Application
 Start your server as a standard node.js application from command-line:
 
     node ./app1.js
@@ -32,8 +32,9 @@ Execute a POST using curl and passing `name` parameter in request body
     curl -X POST -d "name=ola" http://localhost:8000/submit -H "Accept: application/json"
     curl -X POST -d "name=ola" http://localhost:8000/submit -H "Accept: application/xml"
     
-## UI
-UI is defined in PUG (Pretty Universal Generator) HTML template and illustrated below: 
+## User INterface
+Web UI is defined in PUG (Pretty Universal Generator) HTML template. It can be accessed at main route: http://localhost:8000 as illustrated below.
+
 ![ui](doc/ajax-fetch-ui.png)
 
 ## Tests 
